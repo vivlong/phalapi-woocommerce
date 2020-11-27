@@ -21,21 +21,16 @@ class Lite
         if (null == $this->config) {
             $this->config = $di->config->get('app.Woocommerce');
         }
-        $url = $this->config['site_url'];
+        $url = $this->config['url'];
         $ck = $this->config['consumer_key'];
         $cs = $this->config['consumer_secret'];
+        $options = $this->config['options'];
         try {
             $woocommerce = new Client(
                 $url,
-                $user['ck'],
-                $user['cs'],
-                [
-                    'wp_api' => true,
-                    'version' => 'wc/v3',
-                    'query_string_auth' => true,
-                    'verify_ssl' => false,
-                    'timeout' => 120,
-                ]
+                $ck,
+                $cs,
+                $options
             );
             $this->instance = $woocommerce;
         } catch (Exception $e) {
@@ -48,56 +43,14 @@ class Lite
         return $this->instance;
     }
 
-    public function addProduct($name, $type = 'simple', $description, $short_description, $categories = [], $images, $meta = [])
+    public function addProduct($parameters)
     {
         $di = \PhalApi\DI();
-        $productData = [
-            'name' => $name,
-            'type' => $type,
-            'description' => $description,
-            'short_description' => $short_description,
-            'images' => $images,
-            'categories' => $categories,
-            'meta_data' => $meta,
-        ];
         $woocommerce = $this->instance;
         if (!empty($woocommerce)) {
-            //检查产品分类
-            if (!empty($categories)) {
-                $categories = explode('>', $categories);
-                $cates = [];
-                //$di->logger->info('Woocommerce # addProduct categories # '.json_encode($categories));
-                foreach ($categories as $category) {
-                    $data = [
-                        'name' => trim($category),
-                    ];
-                    if (!empty($cates)) {
-                        //$di->logger->info('Woocommerce # addProduct # '.json_encode($cates));
-                        $catId = $cates[0]['id'];
-                        //$di->logger->info('Woocommerce # parent ID # '.$catId);
-                        $data['parent'] = $catId;
-                    }
-                    $rs = $this->addCategories($data);
-                    if (!empty($rs)) {
-                        array_unshift($cates, ['id' => $rs]);
-                    }
-                }
-                if (!empty($cates)) {
-                    $productData['categories'] = $cates;
-                }
-            }
-            if ($description) {
-                $regex1 = '#<style>(.*)</style>#'; //匹配style标签和内容
-                $dec = $description;
-                preg_match_all($regex1, $description, $pat_array); //获取标签和内容
-                $dec = preg_replace($regex1, '', $dec); //删除标签
-                $productData['description'] = $dec;
-                // $di->logger->info('Woocommerce # description # '.json_encode($dec));
-            }
-            // $di->logger->info('Woocommerce # addProduct # '.json_encode($productData));
             try {
-                $results = $woocommerce->post('products', $productData);
-                //$di->logger->info('Woocommerce # addProduct results # '.json_encode($results));
+                $results = $woocommerce->post('products', $parameters);
+
                 return $results;
             } catch (HttpClientException $e) {
                 $lastRequest = $woocommerce->http->getRequest();
@@ -125,7 +78,7 @@ class Lite
         if (!empty($woocommerce)) {
             try {
                 $results = $woocommerce->post('products/categories', $data);
-                //$di->logger->info('Woocommerce # addCategories results # '.json_encode($results));
+
                 return $results->id;
             } catch (HttpClientException $e) {
                 $lastRequest = $woocommerce->http->getRequest();
@@ -146,25 +99,13 @@ class Lite
         }
     }
 
-    public function getProducts($page = 1, $limit = 20, $type = 'simple', $category = [], $tag = [], $offset = 0)
+    public function getProducts($parameters)
     {
         $di = \PhalApi\DI();
         $woocommerce = $this->instance;
         if (!empty($woocommerce)) {
             try {
-                $args = [
-                    'per_page' => $limit,
-                    'page' => $page,
-                    'type' => $type,
-                    'offset' => $offset,
-                ];
-                if (!empty($category)) {
-                    array_merge($args, ['category' => $category]);
-                }
-                if (!empty($tag)) {
-                    array_merge($args, ['tag' => $tag]);
-                }
-                $results = $woocommerce->get('products', $args);
+                $results = $woocommerce->get('products', $parameters);
                 $total = 0;
                 $totalPage = 0;
                 $lastResponse = $woocommerce->http->getResponse();
@@ -198,13 +139,13 @@ class Lite
         }
     }
 
-    public function getProduct($productId)
+    public function getProduct($productId, $parameters)
     {
         $di = \PhalApi\DI();
         $woocommerce = $this->instance;
         if (!empty($woocommerce)) {
             try {
-                $results = $woocommerce->get('products/'.$productId);
+                $results = $woocommerce->get('products/'.$productId, $parameters);
 
                 return $results;
             } catch (HttpClientException $e) {
@@ -218,6 +159,34 @@ class Lite
                     $di->logger->error('Woocommerce # getProduct response # '.$lastResponse->getBody());
                 }
                 $di->logger->error('Woocommerce # getProduct error # '.$e->getMessage());
+
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public function deleteProduct($productId, $parameters)
+    {
+        $di = \PhalApi\DI();
+        $woocommerce = $this->instance;
+        if (!empty($woocommerce)) {
+            try {
+                $results = $woocommerce->delete('products/'.$productId, $parameters);
+
+                return $results;
+            } catch (HttpClientException $e) {
+                $lastRequest = $woocommerce->http->getRequest();
+                $lastResponse = $woocommerce->http->getResponse();
+                $rs = json_decode($lastResponse->getBody());
+                if ($rs && 400 == $rs->data->status) {
+                    return $rs;
+                } else {
+                    $di->logger->error('Woocommerce # deleteProduct request # '.$lastRequest->getBody());
+                    $di->logger->error('Woocommerce # deleteProduct response # '.$lastResponse->getBody());
+                }
+                $di->logger->error('Woocommerce # deleteProduct error # '.$e->getMessage());
 
                 return null;
             }
