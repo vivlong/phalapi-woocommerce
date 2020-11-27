@@ -146,17 +146,25 @@ class Lite
         }
     }
 
-    public function getProducts($page, $limit)
+    public function getProducts($page = 1, $limit = 20, $type = 'simple', $category = [], $tag = [], $offset = 0)
     {
         $di = \PhalApi\DI();
         $woocommerce = $this->instance;
         if (!empty($woocommerce)) {
             try {
-                $results = $woocommerce->get('products', [
+                $args = [
                     'per_page' => $limit,
                     'page' => $page,
-                    'type' => 'simple',
-                ]); //category=? tag=? offset=?
+                    'type' => $type,
+                    'offset' => $offset,
+                ];
+                if (!empty($category)) {
+                    array_merge($args, ['category' => $category]);
+                }
+                if (!empty($tag)) {
+                    array_merge($args, ['tag' => $tag]);
+                }
+                $results = $woocommerce->get('products', $args);
                 $total = 0;
                 $totalPage = 0;
                 $lastResponse = $woocommerce->http->getResponse();
