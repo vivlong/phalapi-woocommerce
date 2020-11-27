@@ -1,0 +1,26 @@
+{
+    "name": "vivlong/phalapi-woocommerce",
+    "description": "PhalApi 2.x扩展类库，操作WooCommerce。",
+    "type": "library",
+    "keywords": [
+        "phalapi", "phalapi-woocommerce", "woocommerce"
+    ],
+    "license": "GPL-3.0+",
+    "homepage": "https://www.phalapi.net/",
+    "authors": [
+        {
+            "name": "JamesLiao",
+            "email": "vivlonglz@gmail.com",
+            "homepage": "https://github.com/vivlong",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "automattic/woocommerce": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhalApi\\Woocommerce\\": "src"
+        }
+    }
+}
