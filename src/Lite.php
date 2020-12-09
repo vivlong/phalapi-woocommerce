@@ -21,16 +21,12 @@ class Lite
         if (null == $this->config) {
             $this->config = $di->config->get('app.Woocommerce');
         }
-        $url = $this->config['url'];
-        $ck = $this->config['consumer_key'];
-        $cs = $this->config['consumer_secret'];
-        $options = $this->config['options'];
         try {
             $woocommerce = new Client(
-                $url,
-                $ck,
-                $cs,
-                $options
+                $this->config['url'],
+                $this->config['consumer_key'],
+                $this->config['consumer_secret'],
+                $this->config['options']
             );
             $this->instance = $woocommerce;
         } catch (Exception $e) {
