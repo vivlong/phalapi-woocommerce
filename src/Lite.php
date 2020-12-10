@@ -30,7 +30,7 @@ class Lite
             );
             $this->instance = $woocommerce;
         } catch (Exception $e) {
-            $di->logger->error('Woocommerce', ['error' => $e->getMessage()]);
+            $di->logger->error(__NAMESPACE__, __FUNCTION__, ['Exception' => $e->getMessage()]);
         }
     }
 
@@ -65,10 +65,10 @@ class Lite
                 if ($rs && 400 == $rs->data->status) {
                     return $rs;
                 } else {
-                    $di->logger->error('Woocommerce', $method.' # '.$route, ['request' => $lastRequest->getBody()]);
-                    $di->logger->error('Woocommerce', $method.' # '.$route, ['response' => $lastResponse->getBody()]);
+                    $di->logger->error(__NAMESPACE__, $method.' # '.$route, ['request' => $lastRequest->getBody()]);
+                    $di->logger->error(__NAMESPACE__, $method.' # '.$route, ['response' => $lastResponse->getBody()]);
                 }
-                $di->logger->error('Woocommerce', $method.' # '.$route, ['error' => $e->getMessage()]);
+                $di->logger->error(__NAMESPACE__, $method.' # '.$route, ['HttpClientException' => $e->getMessage()]);
 
                 return null;
             }
@@ -77,37 +77,37 @@ class Lite
         }
     }
 
-    public function addProduct($parameters)
+    public function addProduct($parameters = [])
     {
         return $this->request('post', 'products', $parameters);
     }
 
-    public function addCategories($data)
+    public function addCategories($parameters = [])
     {
         return $this->request('post', 'products/categories', $parameters);
     }
 
-    public function getProducts($parameters)
+    public function getProducts($parameters = [])
     {
         return $this->request('get', 'products', $parameters);
     }
 
-    public function getProduct($productId, $parameters)
+    public function getProduct($productId, $parameters = [])
     {
         return $this->request('get', 'products/'.$productId, $parameters);
     }
 
-    public function deleteProduct($productId, $parameters)
+    public function deleteProduct($productId, $parameters = [])
     {
         return $this->request('delete', 'products/'.$productId, $parameters);
     }
 
-    public function post($route, $parameters)
+    public function post($route, $parameters = [])
     {
         return $this->request('post', $route, $parameters);
     }
 
-    public function get($route, $parameters)
+    public function get($route, $parameters = [])
     {
         return $this->request('get', $route, $parameters);
     }
