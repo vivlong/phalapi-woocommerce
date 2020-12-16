@@ -30,7 +30,7 @@ class Lite
             );
             $this->instance = $woocommerce;
         } catch (Exception $e) {
-            $di->logger->error(__NAMESPACE__, __FUNCTION__, ['Exception' => $e->getMessage()]);
+            $di->logger->error(__NAMESPACE__.DIRECTORY_SEPARATOR.__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__, ['Exception' => $e->getMessage()]);
         }
     }
 
@@ -65,10 +65,10 @@ class Lite
                 if ($rs && 400 == $rs->data->status) {
                     return $rs;
                 } else {
-                    $di->logger->error(__NAMESPACE__, $method.' # '.$route, ['request' => $lastRequest->getBody()]);
-                    $di->logger->error(__NAMESPACE__, $method.' # '.$route, ['response' => $lastResponse->getBody()]);
+                    $di->logger->error(__NAMESPACE__.DIRECTORY_SEPARATOR.__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__.' # '.$method.' # '.$route, ['request' => $lastRequest->getBody()]);
+                    $di->logger->error(__NAMESPACE__.DIRECTORY_SEPARATOR.__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__.' # '.$method.' # '.$route, ['response' => $lastResponse->getBody()]);
                 }
-                $di->logger->error(__NAMESPACE__, $method.' # '.$route, ['HttpClientException' => $e->getMessage()]);
+                $di->logger->error(__NAMESPACE__.DIRECTORY_SEPARATOR.__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__.' # '.$method.' # '.$route, ['HttpClientException' => $e->getMessage()]);
 
                 return null;
             }
