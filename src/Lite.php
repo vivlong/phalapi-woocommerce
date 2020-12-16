@@ -39,7 +39,7 @@ class Lite
         return $this->instance;
     }
 
-    private function request($method = 'get', $route = '/', $parameters = [])
+    private function request($method = 'get', $route = '/', $parameters = [], $returnArray = false)
     {
         $di = \PhalApi\DI();
         $woocommerce = $this->instance;
@@ -54,7 +54,24 @@ class Lite
                         $results = $woocommerce->delete($route, $parameters);
                         break;
                     default:
-                        $results = $woocommerce->get($route, $parameters);
+                        $rs = $woocommerce->get($route, $parameters);
+                        if ($returnArray) {
+                            $total = 0;
+                            $totalPage = 0;
+                            $lastResponse = $woocommerce->http->getResponse();
+                            $headers = $lastResponse->getHeaders();
+                            if (is_array($headers) && !empty($headers)) {
+                                $total = $headers['X-WP-Total'] ?? 0;
+                                $totalPage = $headers['X-WP-TotalPages'] ?? 0;
+                            }
+                            $results = [
+                                'items' => $rs,
+                                'total' => intval($total),
+                                'totalPage' => intval($totalPage),
+                            ];
+                        } else {
+                            $results = $rs;
+                        }
                 }
 
                 return $results;
@@ -89,7 +106,7 @@ class Lite
 
     public function getProducts($parameters = [])
     {
-        return $this->request('get', 'products', $parameters);
+        return $this->request('get', 'products', $parameters, true);
     }
 
     public function getProduct($productId, $parameters = [])
@@ -107,8 +124,8 @@ class Lite
         return $this->request('post', $route, $parameters);
     }
 
-    public function get($route, $parameters = [])
+    public function get($route, $parameters = [], $returnArray = false)
     {
-        return $this->request('get', $route, $parameters);
+        return $this->request('get', $route, $parameters, $returnArray);
     }
 }
