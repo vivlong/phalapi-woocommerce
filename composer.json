@@ -6,7 +6,7 @@
 		"phalapi", "phalapi-woocommerce", "woocommerce"
 	],
 	"license": "MulanPSL-2.0",
-	"minimum-stability": "dev",
+	"minimum-stability": "stable",
 	"homepage": "https://www.phalapi.net/",
 	"authors": [{
 		"name": "vivlong",
@@ -16,7 +16,7 @@
 	}],
 	"require": {
 		"php": ">=7.0.0",
-		"automattic/woocommerce": "dev-master"
+		"automattic/woocommerce": "^3.0"
 	},
 	"autoload": {
 		"psr-4": {

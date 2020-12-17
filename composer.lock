@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4377805b8028490f68ef387bdc7497b1",
+    "content-hash": "aefc817327bfcb9a41913a7b722c9fd2",
     "packages": [
         {
             "name": "automattic/woocommerce",
-            "version": "dev-master",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/woocommerce/wc-api-php.git",
@@ -35,7 +35,6 @@
                 "phpunit/phpunit": "*",
                 "squizlabs/php_codesniffer": "3.*"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -61,7 +60,7 @@
             ],
             "support": {
                 "issues": "https://github.com/woocommerce/wc-api-php/issues",
-                "source": "https://github.com/woocommerce/wc-api-php/tree/3.0.0"
+                "source": "https://github.com/woocommerce/wc-api-php/tree/master"
             },
             "time": "2019-01-16T20:28:40+00:00"
         }
@@ -69,9 +68,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "automattic/woocommerce": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
