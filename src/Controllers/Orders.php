@@ -4,11 +4,11 @@ namespace PhalApi\Woocommerce\Controllers;
 
 use PhalApi\Woocommerce\Base;
 
-class Orders_Controller extends Base
+class Orders extends Base
 {
     public function listAllOrders($parameters = [])
     {
-        return $this->request('get', 'orders', $parameters);
+        return $this->request('get', 'orders', $parameters, true);
     }
 
     public function retrieveOrder($id, $parameters = [])

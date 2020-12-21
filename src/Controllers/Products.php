@@ -4,11 +4,11 @@ namespace PhalApi\Woocommerce\Controllers;
 
 use PhalApi\Woocommerce\Base;
 
-class Products_Controller extends Base
+class Products extends Base
 {
     public function listAllProducts($parameters = [])
     {
-        return $this->request('get', 'products', $parameters);
+        return $this->request('get', 'products', $parameters, true);
     }
 
     public function retrieveProduct($id, $parameters = [])

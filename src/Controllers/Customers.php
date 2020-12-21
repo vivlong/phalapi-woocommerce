@@ -4,11 +4,11 @@ namespace PhalApi\Woocommerce\Controllers;
 
 use PhalApi\Woocommerce\Base;
 
-class Customers_Controller extends Base
+class Customers extends Base
 {
     public function listAllCustomers($parameters = [])
     {
-        return $this->request('get', 'customers', $parameters);
+        return $this->request('get', 'customers', $parameters, true);
     }
 
     public function retrieveCustomer($id, $parameters = [])

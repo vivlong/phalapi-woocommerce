@@ -13,10 +13,10 @@ abstract class Base
         $this->instance = $instance;
     }
 
-    private function request($method = 'get', $route = '/', $parameters = [], $returnArray = false)
+    public function request($method = 'get', $route = '/', $parameters = [], $returnArray = false)
     {
         $di = \PhalApi\DI();
-        $woocommerce = $this->instance();
+        $woocommerce = $this->instance;
         if (!empty($woocommerce)) {
             try {
                 $results = null;
