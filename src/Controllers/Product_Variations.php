@@ -6,33 +6,33 @@ use PhalApi\Woocommerce\Base;
 
 class Product_Variations extends Base
 {
-    public function listAllProductVariations($id, $parameters = [])
+    public function listAllProductVariations($productId, $parameters = [])
     {
-        return $this->request('get', 'products/'.$id.'/variations', $parameters, true);
+        return $this->request('get', 'products/'.$productId.'/variations', $parameters, true);
     }
 
-    public function retrieveProductVariation($id, $variationId, $parameters = [])
+    public function retrieveProductVariation($productId, $variationId, $parameters = [])
     {
-        return $this->request('get', 'products/'.$id.'/variations//'.$variationId, $parameters);
+        return $this->request('get', 'products/'.$productId.'/variations//'.$variationId, $parameters);
     }
 
-    public function updateProductVariation($id, $variationId, $parameters = [])
+    public function updateProductVariation($productId, $variationId, $parameters = [])
     {
-        return $this->request('post', 'products/'.$id.'/variations//'.$variationId, $parameters);
+        return $this->request('post', 'products/'.$productId.'/variations//'.$variationId, $parameters);
     }
 
-    public function createProductVariation($parameters = [])
+    public function createProductVariation($productId, $parameters = [])
     {
-        return $this->request('post', 'products/'.$id.'/variations', $parameters);
+        return $this->request('post', 'products/'.$productId.'/variations', $parameters);
     }
 
-    public function batchProductVariation($id, $parameters = [])
+    public function deleteProductVariation($productId, $variationId, $parameters = [])
     {
-        return $this->request('post', 'products/'.$id.'/variations/batch', $parameters);
+        return $this->request('delete', 'products/'.$productId.'/variations//'.$variationId, $parameters);
     }
 
-    public function deleteProductVariation($id, $variationId, $parameters = [])
+    public function batchProductVariations($productId, $parameters = [])
     {
-        return $this->request('delete', 'products/'.$id.'/variations//'.$variationId, $parameters);
+        return $this->request('post', 'products/'.$productId.'/variations/batch', $parameters);
     }
 }

@@ -6,33 +6,33 @@ use PhalApi\Woocommerce\Base;
 
 class Product_Attribute_Terms extends Base
 {
-    public function listAllProductAttributeTerms($id, $parameters = [])
+    public function listAllProductAttributeTerms($attributeId, $parameters = [])
     {
-        return $this->request('get', 'products/attributes/'.$id.'/terms', $parameters, true);
+        return $this->request('get', 'products/attributes/'.$attributeId.'/terms', $parameters, true);
     }
 
-    public function retrieveProductAttributeTerms($id, $termsId, $parameters = [])
+    public function retrieveProductAttributeTerm($attributeId, $termsId, $parameters = [])
     {
-        return $this->request('get', 'products/attributes/'.$id.'/terms//'.$termsId, $parameters);
+        return $this->request('get', 'products/attributes/'.$attributeId.'/terms//'.$termsId, $parameters);
     }
 
-    public function updateProductAttributeTerms($id, $termsId, $parameters = [])
+    public function updateProductAttributeTerm($attributeId, $termsId, $parameters = [])
     {
-        return $this->request('post', 'products/attributes/'.$id.'/terms//'.$termsId, $parameters);
+        return $this->request('post', 'products/attributes/'.$attributeId.'/terms//'.$termsId, $parameters);
     }
 
-    public function createProductAttributeTerms($id, $parameters = [])
+    public function createProductAttributeTerm($attributeId, $parameters = [])
     {
-        return $this->request('post', 'products/attributes/'.$id.'/terms', $parameters);
+        return $this->request('post', 'products/attributes/'.$attributeId.'/terms', $parameters);
     }
 
-    public function batchProductAttributeTerms($id, $parameters = [])
+    public function deleteProductAttributeTerm($attributeId, $termsId, $parameters = [])
     {
-        return $this->request('post', 'products/attributes/'.$id.'/terms/batch', $parameters);
+        return $this->request('delete', 'products/attributes/'.$attributeId.'/terms//'.$termsId, $parameters);
     }
 
-    public function deleteProductAttributeTerms($id, $termsId, $parameters = [])
+    public function batchProductAttributeTerms($attributeId, $parameters = [])
     {
-        return $this->request('delete', 'products/attributes/'.$id.'/terms//'.$termsId, $parameters);
+        return $this->request('post', 'products/attributes/'.$attributeId.'/terms/batch', $parameters);
     }
 }

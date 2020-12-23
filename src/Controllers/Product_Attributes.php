@@ -11,22 +11,22 @@ class Product_Attributes extends Base
         return $this->request('get', 'products/attributes', $parameters, true);
     }
 
-    public function retrieveProductCategory($id, $parameters = [])
+    public function retrieveProductAttribute($id, $parameters = [])
     {
         return $this->request('get', 'products/attributes/'.$id, $parameters);
     }
 
-    public function updateProductAttributes($id, $parameters = [])
+    public function updateProductAttribute($id, $parameters = [])
     {
         return $this->request('post', 'products/attributes/'.$id, $parameters);
     }
 
-    public function createProductAttributes($parameters = [])
+    public function createProductAttribute($parameters = [])
     {
         return $this->request('post', 'products/attributes', $parameters);
     }
 
-    public function deleteProductAttributes($id, $parameters = [])
+    public function deleteProductAttribute($id, $parameters = [])
     {
         return $this->request('delete', 'products/attributes/'.$id, $parameters);
     }
