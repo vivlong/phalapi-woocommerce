@@ -29,7 +29,7 @@ class Lite
             );
             $this->instance = $woocommerce;
         } catch (Exception $e) {
-            $di->logger->error(__NAMESPACE__.DIRECTORY_SEPARATOR.__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__, ['Exception' => $e->getMessage()]);
+            $di->logger->error(__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__, ['Exception' => $e->getMessage()]);
         }
         foreach ($this->get_controllers() as $namespace => $controller_name) {
             $controller_class = __NAMESPACE__.'\\Controllers\\'.$controller_name;
