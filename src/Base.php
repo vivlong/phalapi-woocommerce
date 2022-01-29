@@ -24,6 +24,8 @@ abstract class Base
                     case 'post':
                         $results = $woocommerce->post($route, $parameters);
                         break;
+                    case 'put':
+                        $results = $woocommerce->put($route, $parameters);
                     case 'delete':
                         $results = $woocommerce->delete($route, $parameters);
                         break;
