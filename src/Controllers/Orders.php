@@ -30,4 +30,9 @@ class Orders extends Base
     {
         return $this->request('delete', 'orders/'.$id, $parameters);
     }
+
+    public function batchOrders($parameters = [])
+    {
+        return $this->request('post', 'orders/batch', $parameters);
+    }
 }

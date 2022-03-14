@@ -30,4 +30,10 @@ class Product_Categories extends Base
     {
         return $this->request('delete', 'products/categories/'.$id, $parameters);
     }
+
+    public function batchProductCategories($parameters = [])
+    {
+        return $this->request('post', 'products/categories/batch', $parameters);
+    }
+
 }

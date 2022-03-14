@@ -30,4 +30,9 @@ class Customers extends Base
     {
         return $this->request('delete', 'customers/'.$id, $parameters);
     }
+
+    public function batchCustomers($parameters = [])
+    {
+        return $this->request('post', 'customers/batch', $parameters);
+    }
 }

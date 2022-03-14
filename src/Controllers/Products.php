@@ -30,4 +30,9 @@ class Products extends Base
     {
         return $this->request('delete', 'products/'.$id, $parameters);
     }
+
+    public function batchProducts($parameters = [])
+    {
+        return $this->request('post', 'products/batch', $parameters);
+    }
 }
