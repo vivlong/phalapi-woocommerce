@@ -13,7 +13,7 @@ abstract class Base
         $this->instance = $instance;
     }
 
-    public function request($method = 'get', $route = '/', $parameters = [], $returnArray = false)
+    public function request(string $method = 'get', string $route = '/', array $parameters = [], bool $returnArray = false)
     {
         $di = \PhalApi\DI();
         $woocommerce = $this->instance;
@@ -41,7 +41,6 @@ abstract class Base
                             $lastResponse = $woocommerce->http->getResponse();
                             $headers = $lastResponse->getHeaders();
                             if (is_array($headers) && !empty($headers)) {
-                                // $di->logger->info($logBase . ' # headers '. $headers['x-wp-total']);
                                 $total = $headers['X-WP-Total'] ?? $headers['x-wp-total'] ?? $headers['X-WP-TOTAL'] ?? 0;
                                 $totalPage = $headers['X-WP-TotalPages'] ?? $headers['x-wp-totalpages'] ?? $headers['X-WP-TOTALPAGES'] ?? 0;
                                 $queries = $headers['X-WP-Queries'] ?? $headers['x-wp-queries'] ?? $headers['X-WP-QUERIES'] ?? 0;

@@ -6,32 +6,32 @@ use PhalApi\Woocommerce\Base;
 
 class Product_Reviews extends Base
 {
-    public function listAllProductReviews($parameters = [])
+    public function listAllProductReviews(array $parameters = [])
     {
         return $this->request('get', 'products/reviews', $parameters, true);
     }
 
-    public function retrieveProductReview($id, $parameters = [])
+    public function retrieveProductReview(int $id, array $parameters = [])
     {
         return $this->request('get', 'products/reviews/'.$id, $parameters);
     }
 
-    public function updateProductReview($id, $parameters = [])
+    public function updateProductReview(int $id, array $parameters = [])
     {
         return $this->request('post', 'products/reviews/'.$id, $parameters);
     }
 
-    public function createProductReview($parameters = [])
+    public function createProductReview(array $parameters = [])
     {
         return $this->request('post', 'products/reviews', $parameters);
     }
 
-    public function deleteProductReview($id, $parameters = [])
+    public function deleteProductReview(int $id, array $parameters = [])
     {
         return $this->request('delete', 'products/reviews/'.$id, $parameters);
     }
 
-    public function batchProductReviews($parameters = [])
+    public function batchProductReviews(array $parameters = [])
     {
         return $this->request('post', 'products/attributes/reviews/batch', $parameters);
     }

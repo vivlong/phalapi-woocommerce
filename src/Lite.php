@@ -3,10 +3,8 @@
 namespace PhalApi\Woocommerce;
 
 use Automattic\WooCommerce\Client;
+use Exception;
 
-/**
- * Woocommerce操作类.
- */
 class Lite
 {
     protected $config;
@@ -37,7 +35,7 @@ class Lite
         }
     }
 
-    public function __call($method, $arguments)
+    public function __call(string $method, array $arguments)
     {
         if (method_exists($this, $method)) {
             return call_user_func_array([&$this, $method], $arguments);
@@ -50,58 +48,19 @@ class Lite
         }
     }
 
-    protected function get_controllers()
+    protected function get_controllers(): array
     {
         return [
-            // 'coupons'                  => 'Coupons',
-            // 'customer-downloads'       => 'Customer_Downloads',
             'customers' => 'Customers',
-            // 'network-orders'           => 'Network_Orders',
             'order-notes'             => 'Order_Notes',
-            // 'order-refunds'            => 'Order_Refunds',
             'orders'                  => 'Orders',
             'product-attribute-terms' => 'Product_Attribute_Terms',
             'product-attributes'      => 'Product_Attributes',
             'product-categories'      => 'Product_Categories',
             'product-reviews'         => 'Product_Reviews',
-            // 'product-shipping-classes' => 'Product_Shipping_Classes',
             'product-tags'       => 'Product_Tags',
             'products'           => 'Products',
             'product-variations' => 'Product_Variations',
-            // 'reports-sales'            => 'Report_Sales',
-            // 'reports-top-sellers'      => 'Report_Top_Sellers',
-            // 'reports-orders-totals'    => 'Report_Orders_Totals',
-            // 'reports-products-totals'  => 'Report_Products_Totals',
-            // 'reports-customers-totals' => 'Report_Customers_Totals',
-            // 'reports-coupons-totals'   => 'Report_Coupons_Totals',
-            // 'reports-reviews-totals'   => 'Report_Reviews_Totals',
-            // 'reports'                  => 'Reports',
-            // 'settings'                 => 'Settings',
-            // 'settings-options'         => 'Setting_Options',
-            // 'shipping-zones'           => 'Shipping_Zones',
-            // 'shipping-zone-locations'  => 'Shipping_Zone_Locations',
-            // 'shipping-zone-methods'    => 'Shipping_Zone_Methods',
-            // 'tax-classes'              => 'Tax_Classes',
-            // 'taxes'                    => 'Taxes',
-            // 'webhooks'                 => 'Webhooks',
-            // 'system-status'            => 'System_Status',
-            // 'system-status-tools'      => 'System_Status_Tools',
-            // 'shipping-methods'         => 'Shipping_Methods',
-            // 'payment-gateways'         => 'Payment_Gateways',
-            // 'data'                     => 'Data',
-            // 'data-continents'          => 'Data_Continents',
-            // 'data-countries'           => 'Data_Countries',
-            // 'data-currencies'          => 'Data_Currencies',
         ];
     }
-
-    // public function post($route, $parameters = [])
-    // {
-    //     return $this->request('post', $route, $parameters);
-    // }
-
-    // public function get($route, $parameters = [], $returnArray = false)
-    // {
-    //     return $this->request('get', $route, $parameters, $returnArray);
-    // }
 }

@@ -6,32 +6,32 @@ use PhalApi\Woocommerce\Base;
 
 class Orders extends Base
 {
-    public function listAllOrders($parameters = [])
+    public function listAllOrders(array $parameters = [])
     {
         return $this->request('get', 'orders', $parameters, true);
     }
 
-    public function retrieveOrder($id, $parameters = [])
+    public function retrieveOrder(int $id, array $parameters = [])
     {
         return $this->request('get', 'orders/'.$id, $parameters);
     }
 
-    public function updateOrder($id, $parameters = [])
+    public function updateOrder(int $id, array $parameters = [])
     {
         return $this->request('post', 'orders/'.$id, $parameters);
     }
 
-    public function createOrder($parameters = [])
+    public function createOrder(array $parameters = [])
     {
         return $this->request('post', 'orders', $parameters);
     }
 
-    public function deleteOrder($id, $parameters = [])
+    public function deleteOrder(int $id, array $parameters = [])
     {
         return $this->request('delete', 'orders/'.$id, $parameters);
     }
 
-    public function batchOrders($parameters = [])
+    public function batchOrders(array $parameters = [])
     {
         return $this->request('post', 'orders/batch', $parameters);
     }
