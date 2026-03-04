@@ -7,59 +7,82 @@ use Exception;
 
 class Lite
 {
-    protected $config;
-    protected $instance;
-    protected $controllers = [];
+    protected array $config;
+    protected ?object $instance = null;
+    protected array $controllers = [];
 
-    public function __construct($config = null)
+    public function __construct(?array $config = null)
     {
         $di = \PhalApi\DI();
-        $this->config = $config;
-        if (null == $this->config) {
-            $this->config = $di->config->get('app.Woocommerce');
+        $this->config = $config ?? $di->config->get('app.Woocommerce') ?? [];
+
+        // 验证配置
+        if (empty($this->config['url']) || empty($this->config['consumer_key']) || empty($this->config['consumer_secret'])) {
+            $di->logger->error(__CLASS__ . DIRECTORY_SEPARATOR . __FUNCTION__, [
+                'error' => 'Missing required WooCommerce configuration',
+                'config_keys' => array_keys($this->config)
+            ]);
+            return;
         }
+
+        // 确保 options 数组存在
+        $this->config['options'] = $this->config['options'] ?? [
+            'version' => 'wc/v3',
+            'query_string_auth' => false,
+            'verify_ssl' => false,
+            'timeout' => 120,
+        ];
+
         try {
-            $woocommerce = new Client(
+            $this->instance = new Client(
                 $this->config['url'],
                 $this->config['consumer_key'],
                 $this->config['consumer_secret'],
                 $this->config['options']
             );
-            $this->instance = $woocommerce;
         } catch (Exception $e) {
-            $di->logger->error(__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__, ['Exception' => $e->getMessage()]);
+            $di->logger->error(__CLASS__ . DIRECTORY_SEPARATOR . __FUNCTION__, ['Exception' => $e->getMessage()]);
+            $this->instance = null;
         }
-        foreach ($this->get_controllers() as $namespace => $controller_name) {
-            $controller_class = __NAMESPACE__.'\\Controllers\\'.$controller_name;
-            $this->controllers[$namespace] = new $controller_class($this->instance);
-        }
-    }
 
-    public function __call(string $method, array $arguments)
-    {
-        if (method_exists($this, $method)) {
-            return call_user_func_array([&$this, $method], $arguments);
-        } elseif (!empty($this->instance) && $this->instance) {
-            foreach ($this->controllers as $controller) {
-                if (method_exists($controller, $method)) {
-                    return call_user_func_array([&$controller, $method], $arguments);
-                }
+        // 只有在实例创建成功时才初始化控制器
+        if ($this->instance !== null) {
+            foreach ($this->getControllers() as $namespace => $controllerName) {
+                $controllerClass = __NAMESPACE__ . '\\Controllers\\' . $controllerName;
+                $this->controllers[$namespace] = new $controllerClass($this->instance);
             }
         }
     }
 
-    protected function get_controllers(): array
+    public function __call(string $method, array $arguments): mixed
+    {
+        if (method_exists($this, $method)) {
+            return $this->$method(...$arguments);
+        }
+
+        if ($this->instance !== null) {
+            foreach ($this->controllers as $controller) {
+                if (method_exists($controller, $method)) {
+                    return $controller->$method(...$arguments);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    protected function getControllers(): array
     {
         return [
             'customers' => 'Customers',
-            'order-notes'             => 'Order_Notes',
-            'orders'                  => 'Orders',
+            'order-notes' => 'Order_Notes',
+            'orders' => 'Orders',
             'product-attribute-terms' => 'Product_Attribute_Terms',
-            'product-attributes'      => 'Product_Attributes',
-            'product-categories'      => 'Product_Categories',
-            'product-reviews'         => 'Product_Reviews',
-            'product-tags'       => 'Product_Tags',
-            'products'           => 'Products',
+            'product-attributes' => 'Product_Attributes',
+            'product-categories' => 'Product_Categories',
+            'product-reviews' => 'Product_Reviews',
+            'product-tags' => 'Product_Tags',
+            'products' => 'Products',
             'product-variations' => 'Product_Variations',
         ];
     }

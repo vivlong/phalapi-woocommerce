@@ -11,7 +11,7 @@ PhalApi 2.x扩展类库，操作woocommerce。
 安装成功后，添加以下配置到./config/app.php文件：  
 ```php
     'Woocommerce' => array(
-        'site_url' => '<yourSiteUrl>',
+        'url' => '<yourUrl>',
         'consumer_key' => '<yourConsumerKey>',
         'consumer_secret' => '<yourConsumerSecret>',
     ),

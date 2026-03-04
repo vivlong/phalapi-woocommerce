@@ -6,23 +6,23 @@ use PhalApi\Woocommerce\Base;
 
 class Order_Notes extends Base
 {
-    public function listAllOrderNotes(int $orderId, array $parameters = [])
+    public function listAllOrderNotes(int $orderId, array $parameters = []): array
     {
-        return $this->request('get', 'orders/'.$orderId.'/notes', $parameters, true);
+        return $this->request('get', 'orders/' . $orderId . '/notes', $parameters, true);
     }
 
-    public function retrieveOrderNote(int $orderId, int $noteId, array $parameters = [])
+    public function retrieveOrderNote(int $orderId, int $noteId, array $parameters = []): mixed
     {
-        return $this->request('get', 'orders/'.$orderId.'/notes//'.$noteId, $parameters);
+        return $this->request('get', 'orders/' . $orderId . '/notes/' . $noteId, $parameters);
     }
 
-    public function createOrderNote(int $orderId, array $parameters = [])
+    public function createOrderNote(int $orderId, array $parameters = []): mixed
     {
-        return $this->request('post', 'orders/'.$orderId.'/notes', $parameters);
+        return $this->request('post', 'orders/' . $orderId . '/notes', $parameters);
     }
 
-    public function deleteOrderNote(int $orderId, int $noteId, array $parameters = [])
+    public function deleteOrderNote(int $orderId, int $noteId, array $parameters = []): mixed
     {
-        return $this->request('delete', 'orders/'.$orderId.'/notes//'.$noteId, $parameters);
+        return $this->request('delete', 'orders/' . $orderId . '/notes/' . $noteId, $parameters);
     }
 }

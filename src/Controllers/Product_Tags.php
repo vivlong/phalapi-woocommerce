@@ -6,28 +6,28 @@ use PhalApi\Woocommerce\Base;
 
 class Product_Tags extends Base
 {
-    public function listAllProductTags(array $parameters = [])
+    public function listAllProductTags(array $parameters = []): array
     {
         return $this->request('get', 'products/tags', $parameters, true);
     }
 
-    public function retrieveProductTag(int $id, array $parameters = [])
+    public function retrieveProductTag(int $id, array $parameters = []): mixed
     {
-        return $this->request('get', 'products/tags/'.$id, $parameters);
+        return $this->request('get', 'products/tags/' . $id, $parameters);
     }
 
-    public function updateProductTag(int $id, array $parameters = [])
+    public function updateProductTag(int $id, array $parameters = []): mixed
     {
-        return $this->request('post', 'products/tags/'.$id, $parameters);
+        return $this->request('post', 'products/tags/' . $id, $parameters);
     }
 
-    public function createProductTag(array $parameters = [])
+    public function createProductTag(array $parameters = []): mixed
     {
         return $this->request('post', 'products/tags', $parameters);
     }
 
-    public function deleteProductTag(int $id, array $parameters = [])
+    public function deleteProductTag(int $id, array $parameters = []): mixed
     {
-        return $this->request('delete', 'products/tags/'.$id, $parameters);
+        return $this->request('delete', 'products/tags/' . $id, $parameters);
     }
 }
